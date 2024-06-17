@@ -15,11 +15,12 @@ function Chat() {
         },
         body: JSON.stringify({ query: input }),
       });
-      const data = await response.text();
+      const data = await response.json();
+      console.log(data["answer"]);
       setMessages([
         ...messages,
         { text: input, sender: "user" },
-        { text: data, sender: "bot" },
+        { text: data["answer"], sender: "bot" },
       ]);
       setInput("");
     } catch (error) {
@@ -28,11 +29,15 @@ function Chat() {
   };
 
   return (
-    <div className="flex flex-col items-center px-10 py-10 mx-10 my-5 border gap-y-10 border-neutral-500 rounded-3xl">
+    <div className="flex flex-col px-10 py-10 mx-10 my-5 border gap-y-10 border-neutral-500 rounded-3xl">
       {messages.map((message, index) => (
         <p
           key={index}
-          className={message.sender === "user" ? "text-right" : "text-left"}
+          className={
+            message.sender === "user"
+              ? "rounded-tl-3xl rounded-tr-3xl p-2 border border-neutral-400 rounded-bl-3xl text-right"
+              : "rounded-tl-3xl rounded-tr-3xl p-2 border border-neutral-400 rounded-br-3xl text-left"
+          }
         >
           {message.text}
         </p>

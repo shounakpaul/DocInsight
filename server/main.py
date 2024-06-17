@@ -12,7 +12,7 @@ from langchain.chains.retrieval import create_retrieval_chain
 
 
 app = Flask(__name__)
-llm = Ollama(model='phi3', temperature=0.1)
+llm = Ollama(model='tinyllama', temperature=0.1)
 
 db_path = 'db'
 
