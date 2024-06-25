@@ -9,6 +9,7 @@ from langchain_community.vectorstores import Chroma
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.prompts import PromptTemplate
 from langchain.chains.retrieval import create_retrieval_chain
+from langchain_core.messages import HumanMessage
 
 
 app = Flask(__name__)
@@ -24,6 +25,8 @@ text_splitter = RecursiveCharacterTextSplitter(
     length_function=len,
     is_separator_regex=False
 )
+
+chat_history = []
 
 raw_prompt = PromptTemplate.from_template('''
                                           <s>[INST] You are a technical assisstant good at searching documents. If you do not have information from the provided information please say so. [/INST]
@@ -109,7 +112,8 @@ def ask_pdf():
     document_chain = create_stuff_documents_chain(llm, raw_prompt)
     chain = create_retrieval_chain(retriever, document_chain)
 
-    result = chain.invoke({"input": query})
+    result = chain.invoke({"input": query, "chat_history": chat_history})
+    chat_history.extend([HumanMessage(content=query), result["answer"]])
     print(result)
 
     sources = []
