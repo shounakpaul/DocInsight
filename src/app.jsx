@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./components/navbar";
 import Upload from "./components/upload";
 import Chat from "./components/chat";
 
 function App() {
+  const [messages, setMessages] = useState([]);
   return (
     <>
       <Navbar />
-      <Upload />
-      <Chat />
+      <Upload setMessages={setMessages} />
+      <Chat messages={messages} setMessages={setMessages} />
     </>
   );
 }

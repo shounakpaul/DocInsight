@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Button from "./button";
 
-const fetchUploadedFiles = async () => {
-  const response = await fetch("/api/fetch_uploaded");
-  const data = await response.json();
-  return data["files"];
-};
-
-const resetConversation = async () => {
-  const response = await fetch("/api/reset");
-  console.log(await response.json());
-};
-
-function Upload() {
+function Upload({ setMessages }) {
   const [file, setFile] = useState(null);
 
+  const fetchUploadedFiles = async () => {
+    const response = await fetch("/api/fetch_uploaded");
+    const data = await response.json();
+    return data["files"];
+  };
+
+  const resetConversation = async () => {
+    const response = await fetch("/api/reset");
+    console.log(await response.json());
+    setMessages([]);
+  };
+
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+    setFile(event.target.files[0]); 
   };
 
   const handleUpload = async () => {

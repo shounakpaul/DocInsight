@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Button from "./button";
 
-function Chat() {
-  const [messages, setMessages] = useState([]);
+function Chat({ messages, setMessages }) {
+  // const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const response = await fetch("/api/ask_pdf", {
         method: "POST",
@@ -26,10 +28,11 @@ function Chat() {
     } catch (error) {
       console.error(error);
     }
+    setIsSubmitting(false);
   };
 
   return (
-    <div className="flex flex-col px-10 py-10 mx-10 my-5 border gap-y-10 border-neutral-500 rounded-3xl">
+    <div className="flex flex-col px-10 max-h-[60dvh] overflow-y-scroll py-10 mx-10 my-5 border gap-y-10 border-neutral-500 rounded-3xl">
       {messages.map((message, index) => (
         <p
           key={index}
@@ -50,8 +53,22 @@ function Chat() {
             onChange={(e) => setInput(e.target.value)}
             className="flex-1 px-4 py-2 border border-black rounded-3xl"
             placeholder="Ask a question..."
+            disabled={isSubmitting}
           />
-          <Button type="submit" content="Send" />
+          <Button
+            type="submit"
+            content={isSubmitting ? "Submitting..." : "Ask"}
+            disabled={isSubmitting}
+          />
+          <Button
+            type="button"
+            content="Clear Chat"
+            onClick={(e) => {
+              e.stopPropagation();
+              setMessages([]);
+            }}
+            disabled={isSubmitting}
+          />
         </div>
       </form>
     </div>
