@@ -55,7 +55,7 @@ Or else you can choose your own model and make the necessary changes in the `ser
 
 1. Start the Vite development server:
    ```sh
-   npm run devs
+   npm run dev
    ```
 2. In a separate terminal, start the Flask server:
    ```sh
