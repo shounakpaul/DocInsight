@@ -13,7 +13,7 @@ from langchain_core.messages import HumanMessage
 
 
 app = Flask(__name__)
-llm = Ollama(model='tinyllama', temperature=0.1)
+llm = Ollama(model='mistral', temperature=0.1)
 
 db_path = 'db'
 
